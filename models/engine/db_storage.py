@@ -90,7 +90,10 @@ class DBStorage:
     def count(self, cls=None):
         """method count and return number of objs in local storage."""
         nobj = 0
-        if cls in classes:
-            return self.__session.query(classes[cls]).count()
-        for clss in classes.values():
-            nobj = nobj + self.__session.query(clss).count()
+        if type(cls) is str and cls in classes:
+            _cls = classes[cls]
+            nobj = self.__session.query(_cls).count()
+        elif cls is None:
+            for _cls in classes.values():
+                nobj = nobj + self.__session.query(_cls).count()
+        return nobj
