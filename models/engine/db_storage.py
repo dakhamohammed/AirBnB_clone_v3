@@ -74,3 +74,25 @@ class DBStorage:
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
+
+    def get(self, cls, id):
+        """method returns object stored in local mysql database,
+        Or None if the object not found in local mysql database.
+        """
+        if cls in classes and id is type(str):
+            return self.__session.query(
+                                        classes[cls]
+                                        ).filter(
+                                                 classes[cls].id == id
+                                                 ).first()
+        else:
+            return None
+
+    def count(self, cls=None):
+        """method count and return number of objs in local storage."""
+        nobj = 0
+        if cls in classes:
+            return self.__session.query(classes[cls]).count()
+        for clss in classes.values():
+            nobj = nobj + self.__session.query(clss).count()
+            

@@ -71,18 +71,49 @@ test_db_storage.py'])
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+
     def test_all_returns_dict(self):
         """Test that all returns a dictionaty"""
         self.assertIs(type(models.storage.all()), dict)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+
     def test_all_no_class(self):
         """Test that all returns all rows when no class is passed"""
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+
     def test_new(self):
         """test that new adds an object to the database"""
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+
+    def test_get(self):
+        """testing get method returns object based on it's id, or None"""
+        new_city = City(name="New York City")
+        new_city.save()
+        new_user = User(email="dakha@cisfun.com", password="python_is_not_fun")
+        new_user.save()
+        self.assertIs(new_city, models.storage.get("City", new_city.id))
+        self.assertIs(new_user, models.storage.get("User", new_user.id))
+        self.assertIs(None, models.storage.get("City", "randomCity"))
+        self.assertIs(None, models.storage.get("User", "randomUser"))
+        self.assertIs(None, models.storage.get("None", "None"))
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+
+    def test_count(self):
+        """testing count method count the number of objects in db."""
+        n_obj = models.storage.count()
+        self.assertEqual(models.storage.count("None"), 0)
+        new_user = User(name="Dakha")
+        new_user.save()
+        new_user = User(email="dakha@cisfun.com", password="python_is_not_fun")
+        new_user.save()
+        self.assertEqual(models.storage.count("User"), n_obj + 1)
+        self.assertEqual(models.storage.count(), n_obj + 2)
