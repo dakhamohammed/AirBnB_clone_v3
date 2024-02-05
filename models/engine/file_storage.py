@@ -73,13 +73,18 @@ class FileStorage:
         """method returns object stored in local storage,
         Or None if the object not found in local storage.
         """
-        if cls and id is type(str) and cls in classes:
-            return self.__objects.get(cls + '.' + id, None)
+        if type(cls) is str and type(id) is str and cls is not None and\
+           id is not None and cls in classes:
+            obj_key = cls + '.' + id
+            return self.__objects.get(obj_key, None)
         else:
             return None
 
     def count(self, cls=None):
         """method count and return number of objs in local storage."""
-        if cls != None and cls in classes:
-            return len(self.all(cls))
-        return len(self.__objects)
+        n_obj = 0
+        if type(cls) is str and cls in classes:
+            n_obj = len(self.all(cls))
+        elif cls is None:
+            n_obj = len(self.__objects)
+        return n_obj
