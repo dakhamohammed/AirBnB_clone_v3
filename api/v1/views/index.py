@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """index view"""
 from api.v1.views import app_views
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Blueprint
 
 
 objects = {
@@ -20,7 +20,7 @@ def app_status():
     return jsonify({"status": "OK"})
 
 
-@app_views.route('/stats')
+@app_views.route('/api/v1/stats')
 def app_stats():
     """application stats"""
     number_objs = {}
