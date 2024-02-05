@@ -26,13 +26,14 @@ class FileStorage:
 
     def all(self, cls=None):
         """returns the dictionary __objects"""
-        if cls is not None:
-            new_dict = {}
-            for key, value in self.__objects.items():
-                if cls == value.__class__ or cls == value.__class__.__name__:
-                    new_dict[key] = value
-            return new_dict
-        return self.__objects
+        if cls is None:
+            return self.__objects
+        elif type(cls) is str:
+            return {key: val for key, val in self.__objects.items()
+                    if val.__class__.__name__ == cls}
+        else:
+            return {key: val for key, val in self.__objects.items()
+                    if val.__class__ == cls}
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
