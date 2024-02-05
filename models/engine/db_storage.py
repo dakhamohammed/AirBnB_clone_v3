@@ -80,12 +80,12 @@ class DBStorage:
         Or None if the object not found in local mysql database.
         """
         if type(cls) is str and type(id) is str and cls is not None and\
-           and id is not None and cls in classes:
+           id is not None and cls in classes:
             _cls = classes[cls]
             _get = self.__session.query(_cls).filter(_cls.id == id).first()
             return _get
         else:
-        return None
+            return None
 
     def count(self, cls=None):
         """method count and return number of objs in local storage."""
@@ -94,4 +94,3 @@ class DBStorage:
             return self.__session.query(classes[cls]).count()
         for clss in classes.values():
             nobj = nobj + self.__session.query(clss).count()
-            
